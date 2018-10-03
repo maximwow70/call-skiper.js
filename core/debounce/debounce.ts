@@ -1,8 +1,8 @@
-export default function debounce (action, time) {
+export default function debounce(action: Function, time: number) {
 
-    let timeout = null;
+    let timeout: number = null;
 
-    return (...currentArguments) => {
+    return (...currentArguments: any[]) => {
 
         if (timeout) {
             clearTimeout(timeout);
