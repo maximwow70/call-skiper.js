@@ -12,9 +12,9 @@ export default function CallSkiper(
         return !Boolean(maxSkipNumber) || currentSkippedCalls < maxSkipNumber;
     };
 
-    return (...actionArguments): CallSkiperValue => {
-        const isSkipRequire = canSkip()
-            && (!Boolean(shouldSkip) || shouldSkip(currentCalls, currentSkippedCalls, maxSkipNumber))
+    return (...actionArguments: any[]): CallSkiperValue => {
+        const isSkipRequire: boolean = canSkip()
+            && (!Boolean(shouldSkip) || shouldSkip(currentCalls, currentSkippedCalls, maxSkipNumber));
         return new CallSkiperValue(
             isSkipRequire ? null : action(...actionArguments),
             ++currentCalls,

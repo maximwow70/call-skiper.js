@@ -1,8 +1,8 @@
-export default function runOnce(action) {
+export default function runOnce(action: Function) {
 
     let wasRunned: boolean = false;
 
-    return (...currentArguments): void => {
+    return (...currentArguments: any[]): any => {
         if (!wasRunned) {
             wasRunned = true;
             return action(...currentArguments);
