@@ -95,3 +95,43 @@ function runOnce(action) {
     };
 }
 ;
+
+var CacheResponse = /** @class */ (function () {
+    function CacheResponse(request) {
+        /**
+         * @returns Promise<T>
+         */
+        this._request = null;
+        this._cache = null;
+        this._loadingPromise = null;
+        this._request = request;
+    }
+    CacheResponse.prototype.get = function () {
+        var _this = this;
+        var currentArguments = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            currentArguments[_i] = arguments[_i];
+        }
+        if (!this._cache && !this._loadingPromise) {
+            this._loadingPromise = this._request.apply(this, currentArguments).then(function (response) {
+                _this._cache = response;
+                _this._loadingPromise = null;
+                return _this._cache;
+            });
+        }
+        return this._loadingPromise || Promise.resolve(this._cache);
+    };
+    CacheResponse.prototype.clear = function () {
+        this._cache = null;
+    };
+    CacheResponse.prototype.reload = function () {
+        var currentArguments = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            currentArguments[_i] = arguments[_i];
+        }
+        this.clear();
+        return this.get.apply(this, currentArguments);
+    };
+    return CacheResponse;
+}());
+;
