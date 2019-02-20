@@ -135,3 +135,36 @@ var CacheResponse = /** @class */ (function () {
     return CacheResponse;
 }());
 ;
+
+var Arrays = /** @class */ (function () {
+    function Arrays() {
+    }
+    // #endregion fields
+    // #region methods
+    Arrays.compareArrayWithOther = function (array, otherArray, predicate) {
+        return array.every(function (item) { return otherArray.some(function (otherItem) { return predicate(item, otherItem); }); });
+    };
+    ;
+    Arrays.equals = function (array, otherArray, predicate) {
+        return Boolean(array)
+            && Boolean(otherArray)
+            && array.length === otherArray.length
+            && Arrays.compareArrayWithOther(array, otherArray, predicate)
+            && Arrays.compareArrayWithOther(otherArray, array, predicate);
+    };
+    ;
+    // #region fields
+    Arrays._objectsPredicate = function (object, otherObject) {
+        return object.equals(otherObject);
+    };
+    Arrays._primitivesPredicate = function (primitive, otherPrimitive) {
+        return primitive === otherPrimitive;
+    };
+    Arrays.arePrimitivesEqual = function (array, otherArray) {
+        return Arrays.equals(array, otherArray, Arrays._primitivesPredicate);
+    };
+    Arrays.areObjectsEqual = function (array, otherArray) {
+        return Arrays.equals(array, otherArray, Arrays._objectsPredicate);
+    };
+    return Arrays;
+}());

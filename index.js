@@ -65,9 +65,38 @@
         }, 10);
     };
 
+    const testArrays = function () {
+        const array = ["1", 2, null, undefined, false];
+        const otherArray = [2, "1", false, null, undefined];
+
+        function User(id, name) {
+            this.id = id;
+            this.name = name;
+        };
+        User.prototype.equals = function (other) {
+            return Boolean(other)
+                && this.id === other.id
+                && this.name === other.name;
+        };
+
+        const objectArray = [new User(1, "qwe"), new User(2, "qwe")];
+        const otherObjectArray = [new User(2, "qwe"), new User(1, "asd")];
+
+        if (
+            Arrays.arePrimitivesEqual(array, otherArray)
+            && !Arrays.areObjectsEqual(objectArray, otherObjectArray)
+            && Arrays.equals(objectArray, otherObjectArray, (a, b) => a.id === b.id)
+        ) {
+            console.log("Arrays works!");
+        } else {
+            console.log("Array doesn't works!");
+        }
+    };
+
     window.addEventListener("load", () => {
         testCallSkipper();
         testDebounce();
         testRunOnce();
+        testArrays();
     });
 })();
